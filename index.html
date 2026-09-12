@@ -27,16 +27,20 @@
             margin: 0;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            overflow-x: hidden;
         }
         body::-webkit-scrollbar { display: none; }
 
         section {
             scroll-snap-align: start;
             scroll-snap-stop: always;
-            height: 100vh;
+            min-height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            padding: 80px 0; /* Padding for mobile safety */
+            display: flex;
+            align-items: center;
         }
 
         .cyber-grid {
@@ -56,10 +60,10 @@
             will-change: transform, opacity, filter;
         }
 
-        .slide-left   { opacity: 0; transform: translateX(-200px); filter: blur(15px); }
-        .slide-right  { opacity: 0; transform: translateX(200px); filter: blur(15px); }
-        .fade-bottom  { opacity: 0; transform: translateY(150px) scale(0.9); filter: blur(15px); }
-        .zoom-in      { opacity: 0; transform: scale(0.5) translateY(50px); filter: blur(20px); }
+        .slide-left   { opacity: 0; transform: translateX(-100px); filter: blur(10px); }
+        .slide-right  { opacity: 0; transform: translateX(100px); filter: blur(10px); }
+        .fade-bottom  { opacity: 0; transform: translateY(100px) scale(0.95); filter: blur(10px); }
+        .zoom-in      { opacity: 0; transform: scale(0.8) translateY(30px); filter: blur(10px); }
 
         .anim-element.in-view {
             opacity: 1; 
@@ -68,53 +72,76 @@
         }
 
         .neon-text { text-shadow: 0 0 15px rgba(0,229,255,0.6); }
+
+        /* Fix height for mobile */
+        @media (min-width: 768px) {
+            section { height: 100vh; padding: 0; }
+        }
     </style>
 </head>
 <body class="cyber-grid">
 
-    <!-- Navbar Fixed -->
-    <header class="fixed top-0 w-full z-50 glass-panel border-b border-cyber-neon/10 h-16 flex items-center justify-center md:justify-between px-10">
-        <span class="code-font font-bold text-cyber-neon text-lg hidden md:block tracking-widest">&lt;Dakshraj /&gt;</span>
-        <nav class="flex space-x-8 text-xs font-bold tracking-[0.2em] text-gray-400 code-font">
+    <!-- Navbar -->
+    <header class="fixed top-0 w-full z-50 glass-panel border-b border-cyber-neon/10 h-16 flex items-center justify-between px-6 md:px-10">
+        <span class="code-font font-bold text-cyber-neon text-lg tracking-widest">&lt;Dakshraj /&gt;</span>
+        
+        <!-- Desktop Menu -->
+        <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-[0.2em] text-gray-400 code-font">
             <a href="#home" class="hover:text-cyber-neon transition-colors">HOME</a>
             <a href="#about" class="hover:text-cyber-neon transition-colors">ABOUT</a>
             <a href="#education" class="hover:text-cyber-neon transition-colors">ACADEMICS</a>
             <a href="#projects" class="hover:text-cyber-neon transition-colors">WORK</a>
             <a href="#contact" class="hover:text-cyber-neon transition-colors">CONTACT</a>
         </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-btn" class="md:hidden text-cyber-neon focus:outline-none">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
     </header>
 
+    <!-- Mobile Fullscreen Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-cyber-900/95 backdrop-blur-lg z-40 hidden flex-col items-center justify-center space-y-8 text-sm font-bold tracking-[0.3em] text-gray-400 code-font">
+        <a href="#home" class="mobile-link hover:text-cyber-neon">HOME</a>
+        <a href="#about" class="mobile-link hover:text-cyber-neon">ABOUT</a>
+        <a href="#education" class="mobile-link hover:text-cyber-neon">ACADEMICS</a>
+        <a href="#projects" class="mobile-link hover:text-cyber-neon">WORK</a>
+        <a href="#contact" class="mobile-link hover:text-cyber-neon">CONTACT</a>
+    </div>
+
     <!-- 1. Hero Section -->
-    <section id="home" class="flex items-center justify-center text-center px-6 pt-16">
+    <section id="home" class="justify-center text-center px-4 md:px-6">
         <div class="max-w-4xl z-10 w-full">
-            <p class="code-font text-cyber-neon mb-4 tracking-[0.3em] text-sm anim-element fade-bottom">SYSTEM_ONLINE</p>
-            <h1 class="text-6xl md:text-8xl font-extrabold mb-6 anim-element zoom-in" style="transition-delay: 0.1s;">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-neon to-purple-500 neon-text">DAKSHRAJ</span> PARMAR
+            <p class="code-font text-cyber-neon mb-4 tracking-[0.2em] md:tracking-[0.3em] text-xs md:text-sm anim-element fade-bottom">SYSTEM_ONLINE</p>
+            <h1 class="text-5xl md:text-8xl font-extrabold mb-4 md:mb-6 anim-element zoom-in" style="transition-delay: 0.1s;">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-neon to-purple-500 neon-text break-words">DAKSHRAJ</span><br class="md:hidden"> PARMAR
             </h1>
-            <p class="text-xl text-gray-400 font-light mb-10 anim-element slide-left" style="transition-delay: 0.2s;">
-                Full-Stack Architect | AI Integration | UI/UX Engineer
+            <p class="text-sm md:text-xl text-gray-400 font-light mb-8 anim-element slide-left" style="transition-delay: 0.2s;">
+                Full-Stack Architect | AI Integration | UI/UX
             </p>
         </div>
     </section>
 
     <!-- 2. About Section -->
-    <section id="about" class="flex items-center justify-center px-6">
-        <div class="max-w-6xl w-full grid md:grid-cols-2 gap-10 items-center">
+    <section id="about" class="justify-center px-4 md:px-6">
+        <div class="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-center">
             <div class="anim-element slide-left">
-                <h2 class="text-4xl font-bold mb-6 text-white"><span class="text-cyber-neon">01.</span> About Entity</h2>
-                <p class="text-gray-400 text-lg leading-relaxed mb-4 font-light">
-                    I thrive at the intersection of logic and creativity. Building complex database architectures, designing user interfaces, and solving structural problems are where I excel.
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white"><span class="text-cyber-neon">01.</span> About Entity</h2>
+                <p class="text-gray-400 text-sm md:text-lg leading-relaxed mb-4 font-light">
+                    I thrive at the intersection of logic and creativity. Building complex architectures and interfaces is where I excel.
                 </p>
-                <p class="text-gray-400 text-lg leading-relaxed font-light border-l-2 border-cyber-neon/30 pl-4">
-                    My background in state-level athletic competition (boxing, wrestling, yoga) instilled severe discipline, directly translating to my coding endurance and 5K running benchmarks.
+                <p class="text-gray-400 text-sm md:text-lg leading-relaxed font-light border-l-2 border-cyber-neon/30 pl-4">
+                    My background in state-level athletic competition instilled severe discipline, translating to my coding endurance and 5K running benchmarks.
                 </p>
             </div>
-            <div class="glass-panel p-8 rounded-2xl anim-element slide-right" style="transition-delay: 0.2s;">
-                <h3 class="text-xl font-bold mb-4 text-cyber-neon">Tech Arsenal</h3>
-                <div class="space-y-3 text-gray-300 code-font text-sm">
-                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Frontend:</span> HTML5, CSS3, Tailwind, React.js</p>
-                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Backend:</span> Python, Streamlit, Pandas, Librosa</p>
-                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Database:</span> MySQL, Oracle SQL, PHP</p>
+            <div class="glass-panel p-6 md:p-8 rounded-2xl anim-element slide-right" style="transition-delay: 0.2s;">
+                <h3 class="text-lg md:text-xl font-bold mb-4 text-cyber-neon">Tech Arsenal</h3>
+                <div class="space-y-2 md:space-y-3 text-gray-300 code-font text-xs md:text-sm">
+                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Front:</span> HTML, CSS, Tailwind, React</p>
+                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Back:</span> Python, Streamlit, Librosa</p>
+                    <p class="border-b border-white/5 pb-1"><span class="text-purple-400">Data:</span> MySQL, Oracle SQL, PHP</p>
                     <p><span class="text-purple-400">Tools:</span> Git, GitHub, Wampserver</p>
                 </div>
             </div>
@@ -122,70 +149,70 @@
     </section>
 
     <!-- 3. Education Section -->
-    <section id="education" class="flex flex-col justify-center items-center px-6">
+    <section id="education" class="flex-col justify-center items-center px-4 md:px-6">
         <div class="max-w-4xl w-full">
-            <h2 class="text-4xl font-bold mb-12 text-center text-white anim-element slide-right"><span class="text-cyber-neon">02.</span> Academics</h2>
-            <div class="relative border-l border-cyber-neon/30 pl-8 space-y-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-white anim-element slide-right"><span class="text-cyber-neon">02.</span> Academics</h2>
+            <div class="relative border-l border-cyber-neon/30 pl-6 md:pl-8 space-y-8 md:space-y-12 ml-2 md:ml-0">
                 <div class="relative anim-element slide-left">
-                    <div class="absolute -left-[37px] bg-cyber-900 border-2 border-cyber-neon w-5 h-5 rounded-full mt-1.5 shadow-[0_0_10px_#00e5ff]"></div>
-                    <h3 class="text-2xl font-bold text-white mb-1">B.Tech Computer Science</h3>
-                    <p class="text-cyber-neon code-font mb-2 tracking-wider text-sm">LJ University, Ahmedabad</p>
-                    <p class="text-gray-400 font-light">Mastering algorithms, CPU scheduling, OS, and higher mathematics.</p>
+                    <div class="absolute -left-[30px] md:-left-[37px] bg-cyber-900 border-2 border-cyber-neon w-4 h-4 md:w-5 md:h-5 rounded-full mt-1.5 shadow-[0_0_10px_#00e5ff]"></div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-1">B.Tech Computer Science</h3>
+                    <p class="text-cyber-neon code-font mb-2 tracking-wider text-xs md:text-sm">LJ University</p>
+                    <p class="text-gray-400 font-light text-sm">Mastering algorithms, OS, and higher mathematics.</p>
                 </div>
                 <div class="relative anim-element slide-left" style="transition-delay: 0.1s;">
-                    <div class="absolute -left-[37px] bg-cyber-900 border-2 border-gray-600 w-5 h-5 rounded-full mt-1.5"></div>
-                    <h3 class="text-2xl font-bold text-white mb-1">Diploma in Engineering</h3>
-                    <p class="text-gray-500 code-font mb-2 tracking-wider text-sm">Completed via D2D</p>
-                    <p class="text-gray-400 font-light">Built foundational logic and cleared D2D entrance for advanced degree.</p>
+                    <div class="absolute -left-[30px] md:-left-[37px] bg-cyber-900 border-2 border-gray-600 w-4 h-4 md:w-5 md:h-5 rounded-full mt-1.5"></div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-1">Diploma in Engineering</h3>
+                    <p class="text-gray-500 code-font mb-2 tracking-wider text-xs md:text-sm">Completed via D2D</p>
+                    <p class="text-gray-400 font-light text-sm">Built foundational logic and cleared D2D entrance.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 4. Projects Section -->
-    <section id="projects" class="flex flex-col justify-center items-center px-6">
+    <section id="projects" class="flex-col justify-center items-center px-4 md:px-6">
         <div class="max-w-6xl w-full">
-            <h2 class="text-4xl font-bold mb-10 text-center text-white anim-element slide-left"><span class="text-cyber-neon">03.</span> Deployed Modules</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="glass-panel p-6 rounded-2xl anim-element fade-bottom">
-                    <div class="text-cyber-neon code-font text-xs mb-2 tracking-widest">// AI.MODULE</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">VocalSense AI</h3>
-                    <p class="text-gray-400 font-light mb-4 text-sm">Speech Emotion Recognition web app utilizing ML and Python's Librosa.</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 md:mb-10 text-center text-white anim-element slide-left"><span class="text-cyber-neon">03.</span> Modules</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div class="glass-panel p-5 md:p-6 rounded-2xl anim-element fade-bottom">
+                    <div class="text-cyber-neon code-font text-[10px] md:text-xs mb-2 tracking-widest">// AI.MODULE</div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-white">VocalSense AI</h3>
+                    <p class="text-gray-400 font-light text-xs md:text-sm">Speech Emotion Recognition web app utilizing ML & Librosa.</p>
                 </div>
-                <div class="glass-panel p-6 rounded-2xl anim-element fade-bottom" style="transition-delay: 0.1s;">
-                    <div class="text-cyber-neon code-font text-xs mb-2 tracking-widest">// FULLSTACK</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Yoga & Wellness</h3>
-                    <p class="text-gray-400 font-light mb-4 text-sm">Full-stack health system featuring diet charts and tutor portals.</p>
+                <div class="glass-panel p-5 md:p-6 rounded-2xl anim-element fade-bottom" style="transition-delay: 0.1s;">
+                    <div class="text-cyber-neon code-font text-[10px] md:text-xs mb-2 tracking-widest">// FULLSTACK</div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-white">Yoga & Wellness</h3>
+                    <p class="text-gray-400 font-light text-xs md:text-sm">Health system featuring diet charts and tutor portals.</p>
                 </div>
-                <div class="glass-panel p-6 rounded-2xl anim-element fade-bottom" style="transition-delay: 0.2s;">
-                    <div class="text-cyber-neon code-font text-xs mb-2 tracking-widest">// FRONTEND</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">SK Threads</h3>
-                    <p class="text-gray-400 font-light mb-4 text-sm">Industrial-grade single-file web template with custom styling.</p>
+                <div class="glass-panel p-5 md:p-6 rounded-2xl anim-element fade-bottom" style="transition-delay: 0.2s;">
+                    <div class="text-cyber-neon code-font text-[10px] md:text-xs mb-2 tracking-widest">// FRONTEND</div>
+                    <h3 class="text-lg md:text-xl font-bold mb-2 text-white">SK Threads</h3>
+                    <p class="text-gray-400 font-light text-xs md:text-sm">Industrial-grade single-file web template styling.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 5. Contact Section -->
-    <section id="contact" class="flex items-center justify-center px-6">
-        <div class="max-w-xl w-full glass-panel p-10 rounded-2xl anim-element zoom-in">
-            <h2 class="text-3xl font-bold mb-2 text-center text-white"><span class="text-cyber-neon">04.</span> Connect</h2>
-            <p class="text-center text-gray-400 mb-8 code-font text-xs tracking-widest">SECURE_TRANSMISSION_READY</p>
+    <section id="contact" class="justify-center px-4 md:px-6">
+        <div class="max-w-xl w-full glass-panel p-6 md:p-10 rounded-2xl anim-element zoom-in">
+            <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center text-white"><span class="text-cyber-neon">04.</span> Connect</h2>
+            <p class="text-center text-gray-400 mb-6 code-font text-[10px] md:text-xs tracking-widest">TRANSMISSION_READY</p>
             
-            <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-6">
+            <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-4 md:space-y-6">
                 <div>
-                    <label class="block text-xs code-font mb-1 text-cyber-neon">IDENTIFICATION</label>
-                    <input type="text" name="name" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none">
+                    <label class="block text-[10px] md:text-xs code-font mb-1 text-cyber-neon">IDENTIFICATION</label>
+                    <input type="text" name="name" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs code-font mb-1 text-cyber-neon">RETURN_ADDRESS</label>
-                    <input type="email" name="email" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none">
+                    <label class="block text-[10px] md:text-xs code-font mb-1 text-cyber-neon">RETURN_ADDRESS</label>
+                    <input type="email" name="email" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs code-font mb-1 text-cyber-neon">MESSAGE</label>
-                    <textarea name="message" rows="3" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none resize-none"></textarea>
+                    <label class="block text-[10px] md:text-xs code-font mb-1 text-cyber-neon">MESSAGE</label>
+                    <textarea name="message" rows="3" required class="w-full bg-cyber-800/50 border-b border-gray-700 focus:border-cyber-neon text-white px-3 py-2 outline-none resize-none text-sm"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-cyber-neon text-black font-extrabold py-3 hover:bg-white transition-colors code-font tracking-[0.2em]">
+                <button type="submit" class="w-full bg-cyber-neon text-black font-extrabold py-2.5 md:py-3 hover:bg-white transition-colors code-font tracking-[0.2em] text-sm">
                     TRANSMIT
                 </button>
             </form>
@@ -193,9 +220,10 @@
     </section>
 
     <script>
+        // Intersection Observer for Animations
         const observerOptions = {
             root: null,
-            rootMargin: '-10% 0px -10% 0px', 
+            rootMargin: '-5% 0px -5% 0px', 
             threshold: 0.1 
         };
 
@@ -211,6 +239,23 @@
 
         document.querySelectorAll('.anim-element').forEach((el) => {
             observer.observe(el);
+        });
+
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
         });
     </script>
 </body>
